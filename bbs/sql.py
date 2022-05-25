@@ -5,7 +5,7 @@ from  bbs.config import Config
 
 def init():
     """
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "create view type_posts as select post_id from posts_info "
     cursor.execute(sql)
@@ -37,11 +37,11 @@ def init():
 
 def crash():
     """
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "drop view type_posts"
     cursor.execute(sql)
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "drop trigger insert_usr"
     print(sql)
@@ -56,7 +56,7 @@ def crash():
 
 
 def check_pswd(usr_name,pswd):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select reg_id from register_info where reg_name = \"" + usr_name + "\""
     cursor.execute(sql)
@@ -70,7 +70,7 @@ def check_pswd(usr_name,pswd):
 
 
 def get_pswd_from_name(name):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select usr_pswd from register_info where reg_name = \"" + name + "\""
     cursor.execute(sql)
@@ -80,7 +80,7 @@ def get_pswd_from_name(name):
 
 
 def get_id_from_name(name):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select reg_id from register_info where reg_name = \"" + name + "\""
     cursor.execute(sql)
@@ -92,7 +92,7 @@ def get_id_from_name(name):
 # posts
 
 def get_post_ids_from_id(usr_id):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select post_id from posts_info where usr_id = \"" + str(usr_id) + "\""
     cursor.execute(sql)
@@ -102,7 +102,7 @@ def get_post_ids_from_id(usr_id):
 
 
 def get_post_content_from_post_id(post_id):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select * from posts_info where post_id = \"" + str(post_id) + "\""
     cursor.execute(sql)
@@ -112,7 +112,7 @@ def get_post_content_from_post_id(post_id):
 
 
 def get_reference_id_from_post_id(post_id):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select comment_id from posts_info where post_id = \"" + str(post_id) + "\""
     cursor.execute(sql)
@@ -122,7 +122,7 @@ def get_reference_id_from_post_id(post_id):
 
 
 def get_father_id_from_post_id(post_id):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select comment_id from posts_info where post_id = \"" + str(post_id) + "\""
     cursor.execute(sql)
@@ -138,7 +138,7 @@ def get_father_id_from_post_id(post_id):
 
 
 def get_full_post_from_post_id(post_id):
-    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect( host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select next_id from posts_info where post_id = \"" + str(post_id) + "\""
     cursor.execute(sql)
@@ -167,7 +167,7 @@ def get_full_post_from_post_id(post_id):
 
 
 def get_last_post_id_from_post_id(post_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select next_id from posts_info where post_id = \"" + str(post_id) + "\""
     cursor.execute(sql)
@@ -183,7 +183,7 @@ def get_last_post_id_from_post_id(post_id):
 
 
 def get_top_ten_posts():
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select * from posts_info where comment_id = -1 and comment_num >= 5 order by comment_num desc limit 10;"
     cursor.execute(sql)
@@ -193,7 +193,7 @@ def get_top_ten_posts():
 
 
 def get_post_from_type(type):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     # @TODO finish view
     sql = "select * from posts_info where type = " + str(type)
@@ -207,7 +207,7 @@ def get_post_from_type(type):
 
 
 def add_new_post(usr_id, topic, content, type):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select MAX(post_id) from posts_info"
@@ -227,7 +227,7 @@ def add_new_post(usr_id, topic, content, type):
 
 
 def add_new_comment(post_id, usr_id, content, reference_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select MAX(post_id) from posts_info"
@@ -245,7 +245,7 @@ def add_new_comment(post_id, usr_id, content, reference_id):
     cursor.execute(sql)
     print("insert success2")
     father_id = get_father_id_from_post_id(this_last_id)
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select comment_num from posts_info where post_id = " + str(father_id)
     cursor.execute(sql)
@@ -264,7 +264,7 @@ def add_new_comment(post_id, usr_id, content, reference_id):
 
 
 def register_usr_name_and_pswd(usr_name, pswd):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select reg_id from register_info where reg_name = \"" + usr_name + "\""
@@ -290,7 +290,7 @@ def register_usr_name_and_pswd(usr_name, pswd):
 
 
 def update_usr_info(usr_name, usr_gender, usr_phone_num, usr_photo_location, usr_nickname, usr_school, usr_age, usr_email):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                            , autocommit=True)
     cursor = conn.cursor()
     if usr_gender:
@@ -323,7 +323,7 @@ def update_usr_info(usr_name, usr_gender, usr_phone_num, usr_photo_location, usr
 
 
 def get_usr_info_by_id(usr_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                            , autocommit=True)
     cursor = conn.cursor()
     sql = "select * from register_info where reg_id = \"" + str(usr_id) + "\""
@@ -348,7 +348,7 @@ def get_usr_info_by_id(usr_id):
 
 
 def change_usr_name(usr_name, new_usr_name):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select reg_id from register_info where reg_name = \"" + new_usr_name + "\""
@@ -364,7 +364,7 @@ def change_usr_name(usr_name, new_usr_name):
 
 # likes: 1, -1分别代表喜欢和不喜欢
 def like(usr_id, likes, post_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select MAX(id) from likes"
@@ -414,7 +414,7 @@ def like(usr_id, likes, post_id):
 
 # return likes and dislikes
 def get_like_numbers(post_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select SUM(opinion) from likes where opinion = 1 and post_id = " + str(post_id)
@@ -434,7 +434,7 @@ def get_like_numbers(post_id):
 
 # star: 1 refers to star
 def star(usr_id, post_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select MAX(id) from likes"
@@ -480,7 +480,7 @@ def star(usr_id, post_id):
 
 # return likes and dislikes
 def get_stars_from_usr_id(usr_id):
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8'
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
     sql = "select post_id from collections where usr_id = " + str(usr_id)
@@ -491,7 +491,7 @@ def get_stars_from_usr_id(usr_id):
     return res
 
 def get_types():
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select kind_id,kind_name from kinds"
     cursor.execute(sql)
@@ -499,7 +499,7 @@ def get_types():
     return res
 
 def get_current_ten_posts():
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, port=Config.mysql_database, charset='utf8')
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
     cursor = conn.cursor()
     sql = "select * from posts_info where comment_id = -1 and comment_num >= 0 order by date desc limit 10;"
     cursor.execute(sql)
