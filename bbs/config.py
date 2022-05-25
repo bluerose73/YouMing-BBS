@@ -4,3 +4,5 @@ class Config:
     domain_name='www.baidu.com'
     mysql_user = 'bbs'
     mysql_password = '666'
+    mysql_host = 'localhost'
+    mysql_port = 3306
