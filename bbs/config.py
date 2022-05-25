@@ -6,3 +6,4 @@ class Config:
     mysql_password = '666'
     mysql_host = 'localhost'
     mysql_port = 3306
+    mysql_database = 'bbs'
