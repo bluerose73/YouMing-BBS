@@ -70,7 +70,6 @@ def post_tuple_to_dict(t):
     post['like'], post['dislike'] = get_like_numbers(post['id'])
     if current_user.is_authenticated:
         stars = get_stars_from_usr_id(current_user.get_id())
-        ic(stars)
         if stars and post['id'] in stars:
             post['favorate'] = True
     return post

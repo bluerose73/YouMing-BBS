@@ -148,7 +148,7 @@ def like():
     bid = request.args.get('bid')
     threadid = request.args.get('threadid')
     postid = request.args.get('postid')
-    like = request.args.get('like')
+    like = int(request.args.get('like'))
 
     db.toggle_like(current_user.get_id(), like, postid)
     return redirect(url_for('post_read', bid=bid, threadid=threadid))
