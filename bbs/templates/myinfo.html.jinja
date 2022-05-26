@@ -29,12 +29,12 @@
                 <a href="#example4-tab3" class="mdui-ripple">发帖纪录</a>
             </div>
             <div id="example4-tab1" class="info">
-                <div class="item"><span class="item-left">昵称：</span><span>{{ current_user.nickname }}</span></div>
-                <div class="item"><span class="item-left">性别：</span><span> {{ current_user.gender }} </span></div>
-                <div class="item"><span class="item-left">年龄：</span><span> {{current_user.age}} </span></div>
-                <div class="item"><span class="item-left">电话：</span><span>{{current_user.phone_num}}</span></div>
-                <div class="item"><span class="item-left">email：</span><span>{{current_user.email}}</span></div>
-                <div class="item"><span class="item-left">学校信息：</span><span></span>{{current_user.school}}</div>
+                <div class="item"><span class="item-left">昵称：</span><span> {{ current_user.nickname or '' }}</span></div>
+                <div class="item"><span class="item-left">性别：</span><span> {{ current_user.gender or '' }} </span></div>
+                <div class="item"><span class="item-left">年龄：</span><span> {{current_user.age or ''}} </span></div>
+                <div class="item"><span class="item-left">电话：</span><span>{{current_user.phone_num or ''}}</span></div>
+                <div class="item"><span class="item-left">email：</span><span>{{current_user.email or ''}}</span></div>
+                <div class="item"><span class="item-left">学校信息：</span><span></span>{{current_user.school or ''}}</div>
                 {# <div class="item item1"><span class="item-left">个人签名：</span><span>无论走到哪里，都应该记住，过去都是假的。</span></div> #}
             </div>
             {# <div id="example4-tab2" class="past-view">
@@ -110,16 +110,16 @@
                     </label>
                 </p>
                 <p><label class="mdui-textfield-label">年龄</label>
-                    <input class="mdui-textfield-input" type="text" name="age" value="{{current_user.age}}" />
+                    <input class="mdui-textfield-input" type="text" name="age" value="{{current_user.age or ''}}" />
                 </p>
                 <p><label class="mdui-textfield-label">电话</label>
-                    <input class="mdui-textfield-input" type="text" name="phone" value="{{current_user.phone_num}}" />
+                    <input class="mdui-textfield-input" type="text" name="phone" value="{{current_user.phone_num or ''}}" />
                 </p>
                 <p><label class="mdui-textfield-label">email</label>
-                    <input class="mdui-textfield-input" type="text" name="email" value="{{current_user.email}}" />
+                    <input class="mdui-textfield-input" type="text" name="email" value="{{current_user.email or ''}}" />
                 </p>
                 <p><label class="mdui-textfield-label">学校信息</label>
-                    <input class="mdui-textfield-input" type="text" name="school" value="{{current_user.school}}" />
+                    <input class="mdui-textfield-input" type="text" name="school" value="{{current_user.school or ''}}" />
                 </p>
                 {# <p><label class="mdui-textfield-label">个人签名</label>
                     <input class="mdui-textfield-input" type="text" name="sign" value="无论走到哪里，都应该记住，过去都是假的。" />
