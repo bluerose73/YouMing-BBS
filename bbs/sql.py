@@ -212,114 +212,169 @@ def add_new_post(usr_id, topic, content, type):
     conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
-    sql = "select MAX(post_id) from posts_info"
+    ok = 0
+    sql = "start transaction"
     cursor.execute(sql)
-    last_id = cursor.fetchone()[0]
-    if last_id == None:
-        last_id = -1
-    last_id += 1
-    sql = "insert into posts_info (`post_id`, `usr_id`, `next_id`, `content`, `comment_id`, `date`, `comment_num`, `total_comment_num`, `type`, `topic`) VALUES (" + \
-        str(last_id) + "," + str(usr_id) + "," + str(-1) + ",\"" + str(content) + "\"," + str(-1) + ",\"" + \
-        str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_wday) + \
-        " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + \
-         "\"," + str(0) +"," + str(0) + "," + str(type) + ',\"' + topic + "\")"
+    try:
+        sql = "select MAX(post_id) from posts_info"
+        cursor.execute(sql)
+        last_id = cursor.fetchone()[0]
+        if last_id == None:
+            last_id = -1
+        last_id += 1
+        sql = "insert into posts_info (`post_id`, `usr_id`, `next_id`, `content`, `comment_id`, `date`, `comment_num`, `total_comment_num`, `type`, `topic`) VALUES (" + \
+            str(last_id) + "," + str(usr_id) + "," + str(-1) + ",\"" + str(content) + "\"," + str(-1) + ",\"" + \
+            str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_wday) + \
+            " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + \
+            "\"," + str(0) +"," + str(0) + "," + str(type) + ',\"' + topic + "\")"
 
-    cursor.execute(sql)
-    return
-
+        cursor.execute(sql)
+        return
+    except Exception as e :
+        ok = 1
+    finally:
+        if not ok:
+            sql = "commit"
+            cursor.execute(sql)
+            conn.close()
+        else:
+            sql = "rollback"
+            cursor.execute(sql)
+            conn.close()
 
 def add_new_comment(post_id, usr_id, content, reference_id):
     conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
-    sql = "select MAX(post_id) from posts_info"
+    ok = 0
+    sql = "start transaction"
     cursor.execute(sql)
-    last_id = cursor.fetchone()[0] + 1
-    this_last_id = get_last_post_id_from_post_id(post_id)
-    sql = "update posts_info set next_id = " + str(last_id) + " where post_id = " + str(this_last_id)
-    cursor.execute(sql)
-    print("insert success1")
-    sql = "insert into posts_info (`post_id`, `usr_id`, `next_id`, `content`, `comment_id`, `date`, `comment_num`, `total_comment_num`, `type`) VALUES (" + \
-        str(last_id ) + "," + str(usr_id) + "," + str(-1) + ",\"" + str(content) + "\"," + str(reference_id) + ",\"" + \
-        str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_mday) + \
-        " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + \
-          "\"," + str(0) + "," + str(0) + "," + 'null' + ")"
-    cursor.execute(sql)
-    print("insert success2")
-    father_id = get_father_id_from_post_id(this_last_id)
-    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
-    cursor = conn.cursor()
-    sql = "select comment_num from posts_info where post_id = " + str(father_id)
-    cursor.execute(sql)
-    res = cursor.fetchone()[0]
-    sql = "update posts_info set comment_num = " + str(res+1) + " where post_id = " + str(father_id)
-    print("sql is: ",sql)
-    cursor.execute(sql)
-    sql = "select total_comment_num from posts_info where post_id = " + str(father_id)
-    cursor.execute(sql)
-    res = cursor.fetchone()[0]
-    sql = "update posts_info set total_comment_num = " + str(res+1) + " where post_id = " + str(father_id)
-    cursor.execute(sql)
-    conn.commit()
-    conn.close()
-    return
+    try:
+        sql = "select MAX(post_id) from posts_info"
+        cursor.execute(sql)
+        last_id = cursor.fetchone()[0] + 1
+        this_last_id = get_last_post_id_from_post_id(post_id)
+        sql = "update posts_info set next_id = " + str(last_id) + " where post_id = " + str(this_last_id)
+        cursor.execute(sql)
+        print("insert success1")
+        sql = "insert into posts_info (`post_id`, `usr_id`, `next_id`, `content`, `comment_id`, `date`, `comment_num`, `total_comment_num`, `type`) VALUES (" + \
+            str(last_id ) + "," + str(usr_id) + "," + str(-1) + ",\"" + str(content) + "\"," + str(reference_id) + ",\"" + \
+            str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_mday) + \
+            " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + \
+            "\"," + str(0) + "," + str(0) + "," + 'null' + ")"
+        cursor.execute(sql)
+        print("insert success2")
+        father_id = get_father_id_from_post_id(this_last_id)
+        conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
+        cursor = conn.cursor()
+        sql = "select comment_num from posts_info where post_id = " + str(father_id)
+        cursor.execute(sql)
+        res = cursor.fetchone()[0]
+        sql = "update posts_info set comment_num = " + str(res+1) + " where post_id = " + str(father_id)
+        print("sql is: ",sql)
+        cursor.execute(sql)
+        sql = "select total_comment_num from posts_info where post_id = " + str(father_id)
+        cursor.execute(sql)
+        res = cursor.fetchone()[0]
+        sql = "update posts_info set total_comment_num = " + str(res+1) + " where post_id = " + str(father_id)
+        cursor.execute(sql)
+        return
+    except Exception as e :
+        ok = 1
+    finally:
+        if not ok:
+            sql = "commit"
+            cursor.execute(sql)
+            conn.close()
+        else:
+            sql = "rollback"
+            cursor.execute(sql)
+            conn.close()
 
 
 def register_usr_name_and_pswd(usr_name, pswd):
     conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
-    sql = "select reg_id from register_info where reg_name = \"" + usr_name + "\""
+    ok = 0
+    sql = "start transaction"
     cursor.execute(sql)
-    res = cursor.fetchone()
-    print(res)
-    if res != None:
-        return False
-    sql = "select MAX(reg_id) from register_info"
-    cursor.execute(sql)
-    max_id = cursor.fetchone()[0]
-    print(f'max_id = {max_id}')
-    if max_id == None:
-        max_id = -1
-    sql = "insert into register_info (`reg_id`, `reg_name`, `usr_pswd`, `date`) VALUES (" + \
-        str(max_id+1) + ",\"" + str(usr_name) + "\"," + '"' + str(pswd)  + '"' + ",\"" + \
-        str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_mday) + \
-        " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + "\")"
-    cursor.execute(sql)
-    return True
-
+    try:
+        sql = "select reg_id from register_info where reg_name = \"" + usr_name + "\""
+        cursor.execute(sql)
+        res = cursor.fetchone()
+        print(res)
+        if res != None:
+            return False
+        sql = "select MAX(reg_id) from register_info"
+        cursor.execute(sql)
+        max_id = cursor.fetchone()[0]
+        print(f'max_id = {max_id}')
+        if max_id == None:
+            max_id = -1
+        sql = "insert into register_info (`reg_id`, `reg_name`, `usr_pswd`, `date`) VALUES (" + \
+            str(max_id+1) + ",\"" + str(usr_name) + "\"," + '"' + str(pswd)  + '"' + ",\"" + \
+            str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_mday) + \
+            " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + "\")"
+        cursor.execute(sql)
+        return True
+    except Exception as e :
+        ok = 1
+    finally:
+        if not ok:
+            sql = "commit"
+            cursor.execute(sql)
+            conn.close()
+        else:
+            sql = "rollback"
+            cursor.execute(sql)
+            conn.close()
 
 def update_usr_info(usr_name, usr_gender, usr_phone_num, usr_photo_location, usr_nickname, usr_school, usr_age, usr_email):
     conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                            , autocommit=True)
     cursor = conn.cursor()
-    if usr_gender:
-        sql = "update register_info set usr_gender = \"" + str(usr_gender) + "\" where reg_name = \"" +str(usr_name)+ "\""
-        cursor.execute(sql)
-    if usr_phone_num:
-        sql = "update register_info set usr_phone_num = \"" + str(usr_phone_num) + "\" where reg_name = \"" + str(usr_name)+ "\""
-        cursor.execute(sql)
-    if usr_photo_location:
-        sql = "update register_info set usr_photo_location = \"" + str(usr_photo_location) + "\" where reg_name = \"" + str(
-            usr_name) + "\""
-        cursor.execute(sql)
-    if usr_nickname:
-        sql = "update register_info set usr_nickname = \"" + str(usr_nickname) + "\" where reg_name = \"" + str(
-            usr_name) + "\""
-        cursor.execute(sql)
-    if usr_school:
-        sql = "update register_info set usr_school = \"" + str(usr_school) + "\" where reg_name = \"" + str(
-            usr_name) + "\""
-        cursor.execute(sql)
-    if usr_age:
-        sql = "update register_info set usr_age = \"" + str(usr_age) + "\" where reg_name = \"" + str(
-            usr_name) + "\""
-        cursor.execute(sql)
-    if usr_email:
-        sql = "update register_info set usr_email = \"" + str(usr_email) + "\" where reg_name = \"" + str(
-            usr_name) + "\""
-        cursor.execute(sql)
-    conn.close()
+    ok = 0
+    sql = "start transaction"
+    cursor.execute(sql)
+    try:
+        if usr_gender:
+            sql = "update register_info set usr_gender = \"" + str(usr_gender) + "\" where reg_name = \"" +str(usr_name)+ "\""
+            cursor.execute(sql)
+        if usr_phone_num:
+            sql = "update register_info set usr_phone_num = \"" + str(usr_phone_num) + "\" where reg_name = \"" + str(usr_name)+ "\""
+            cursor.execute(sql)
+        if usr_photo_location:
+            sql = "update register_info set usr_photo_location = \"" + str(usr_photo_location) + "\" where reg_name = \"" + str(
+                usr_name) + "\""
+            cursor.execute(sql)
+        if usr_nickname:
+            sql = "update register_info set usr_nickname = \"" + str(usr_nickname) + "\" where reg_name = \"" + str(
+                usr_name) + "\""
+            cursor.execute(sql)
+        if usr_school:
+            sql = "update register_info set usr_school = \"" + str(usr_school) + "\" where reg_name = \"" + str(
+                usr_name) + "\""
+            cursor.execute(sql)
+        if usr_age:
+            sql = "update register_info set usr_age = \"" + str(usr_age) + "\" where reg_name = \"" + str(
+                usr_name) + "\""
+            cursor.execute(sql)
+        if usr_email:
+            sql = "update register_info set usr_email = \"" + str(usr_email) + "\" where reg_name = \"" + str(
+                usr_name) + "\""
+            cursor.execute(sql)
+    except Exception as e :
+        ok = 1
+    finally:
+        if not ok:
+            sql = "commit"
+            cursor.execute(sql)
+            conn.close()
+        else:
+            sql = "rollback"
+            cursor.execute(sql)
+            conn.close()
 
 
 def get_usr_info_by_id(usr_id):
@@ -356,15 +411,30 @@ def change_usr_name(usr_name, new_usr_name):
     conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
-    sql = "select reg_id from register_info where reg_name = \"" + new_usr_name + "\""
+    ok = 0
+    sql = "start transaction"
     cursor.execute(sql)
-    res = cursor.fetchone()
-    print(res)
-    if res != None:
-        return False
-    sql = "update register_info set reg_name = \"" + str(new_usr_name) + "\" where reg_name = \"" + str(usr_name) + "\""
-    cursor.execute(sql)
-    return True
+    try:
+        sql = "select reg_id from register_info where reg_name = \"" + new_usr_name + "\""
+        cursor.execute(sql)
+        res = cursor.fetchone()
+        print(res)
+        if res != None:
+            return False
+        sql = "update register_info set reg_name = \"" + str(new_usr_name) + "\" where reg_name = \"" + str(usr_name) + "\""
+        cursor.execute(sql)
+        return True
+    except Exception as e :
+        ok = 1
+    finally:
+        if not ok:
+            sql = "commit"
+            cursor.execute(sql)
+            conn.close()
+        else:
+            sql = "rollback"
+            cursor.execute(sql)
+            conn.close()
 
 
 # likes: 1, -1分别代表喜欢和不喜欢

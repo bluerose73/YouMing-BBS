@@ -69,7 +69,6 @@ def post_tuple_to_dict(t):
         'time': t[8],
         'post-count': t[10],
     }
-    ic(post['content'])
     post['author'] = get_user_by_id(post['user_id'])
     post['like'], post['dislike'] = get_like_numbers(post['id'])
     if current_user.is_authenticated:
