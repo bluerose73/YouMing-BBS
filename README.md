@@ -18,7 +18,7 @@ python = 3.8
 install dependency
 
 ```shell
-pip install flask pymysql icecream
+pip install flask flask-login pymysql icecream
 ```
 
 #### Run
