@@ -98,7 +98,7 @@
                     <div class="mdui-card-actions">
                         <a href={{url_for('like', bid=board.id, threadid=thread.id, postid=comment.id, like=1)}}>
                         <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button
-                            {% if thread.liked_by_user %} active {% endif %}"
+                            {% if comment.liked_by_user %} active {% endif %}"
                             mdui-tooltip="{content: '顶一下', delay: 200}">
                             <span class="badge">{{comment.like}}</span>
                             <i class="mdui-icon material-icons mdui-text-color-theme-icon">&#xe8dc;</i>
@@ -106,7 +106,7 @@
                         </a>
                         <a href={{url_for('like', bid=board.id, threadid=thread.id, postid=comment.id, like=-1)}}>
                         <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button
-                            {% if thread.disliked_by_user %} active {% endif %}""
+                            {% if comment.disliked_by_user %} active {% endif %}""
                             mdui-tooltip="{content: '踩一下', delay: 200}">
                             <span class="badge">{{comment.dislike}}</span>
                             <i class="mdui-icon material-icons mdui-text-color-theme-icon">thumb_down</i>
