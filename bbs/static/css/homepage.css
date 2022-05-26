@@ -132,3 +132,8 @@
     border-radius: 8px;
     padding: 5px;
 }
+
+.homepage-entry{
+    width:100%;
+    text-align:left;
+}

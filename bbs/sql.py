@@ -285,8 +285,6 @@ def register_usr_name_and_pswd(usr_name, pswd):
         str(max_id+1) + ",\"" + str(usr_name) + "\"," + '"' + str(pswd)  + '"' + ",\"" + \
         str(time.localtime().tm_year) + "/" + str(time.localtime().tm_mon) + "/" + str(time.localtime().tm_mday) + \
         " " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min) + ":" + str(time.localtime().tm_sec) + "\")"
-    from icecream import ic
-    ic(sql)
     cursor.execute(sql)
     return True
 
@@ -509,6 +507,25 @@ def get_current_ten_posts():
     res = cursor.fetchall()
     conn.close()
     return res
+
+def get_like(usr_id, post_id):
+    conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
+                            , autocommit=True)
+    cursor = conn.cursor()
+    sql = "select SUM(opinion) from likes where opinion = 1 and post_id = " + str(post_id) + " and usr_id = " + str(usr_id)
+    cursor.execute(sql)
+    res1 = cursor.fetchone()[0]
+    if not res1:
+        res1 = 0
+    sql = "select SUM(opinion) from likes where opinion = -1 and post_id = " + str(post_id) + " and usr_id = " + str(usr_id)
+    cursor.execute(sql)
+    res2 = cursor.fetchone()[0]
+    if not res2:
+        res2 = 0
+
+    conn.close()
+    return res1, -res2
+
 
 # test info
 # @TODO search api

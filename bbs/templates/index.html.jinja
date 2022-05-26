@@ -20,7 +20,7 @@
                 </a>
                 <div class="mdui-card-actions mdui-card-actions-stacked">
                     {% for thread in top10 %}
-                    <button class="mdui-btn mdui-ripple" onclick="location.href='{{ url_for('post_read', bid=thread.bid, threadid=thread.id) }}'"> {{ thread.title }} </button>
+                    <button class="mdui-btn mdui-ripple homepage-entry" onclick="location.href='{{ url_for('post_read', bid=thread.bid, threadid=thread.id) }}'"> {{ thread.title }} </button>
                     {% endfor %}
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 </a>
                 <div class="mdui-card-actions mdui-card-actions-stacked">
                     {% for thread in recent10 %}
-                    <button class="mdui-btn mdui-ripple" onclick="location.href='{{ url_for('post_read', bid=thread.bid, threadid=thread.id) }}'"> {{ thread.title }} </button>
+                    <button class="mdui-btn mdui-ripple homepage-entry" onclick="location.href='{{ url_for('post_read', bid=thread.bid, threadid=thread.id) }}'"> {{ thread.title }} </button>
                     {% endfor %}
                 </div>
             </div>
@@ -47,7 +47,7 @@
 
                 <div class="mdui-card-actions mdui-card-actions-stacked">
                     {% for board in boards %}
-                    <button class="mdui-btn mdui-ripple" onclick="location.href='{{ url_for('thread', bid=board.id) }}'"> {{ board.name }} </button>
+                    <button class="mdui-btn mdui-ripple homepage-entry" onclick="location.href='{{ url_for('thread', bid=board.id) }}'"> {{ board.name }} </button>
                     {% endfor %}
                 </div>
             </div>

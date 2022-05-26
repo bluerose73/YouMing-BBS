@@ -1,5 +1,6 @@
 # Interface to sql.py
 
+from flask import escape
 from bbs.sql import *
 from icecream import ic
 from flask_login import current_user, logout_user
@@ -61,13 +62,14 @@ def post_tuple_to_dict(t):
     post = {
         'id': t[0],
         'user_id': t[1],
-        'title': t[4],
-        'content': t[5],
+        'title': escape(t[4]),
+        'content': escape(t[5]),
         'comment_id': t[6],
         'bid': t[7],
         'time': t[8],
         'post-count': t[10],
     }
+    ic(post['content'])
     post['author'] = get_user_by_id(post['user_id'])
     post['like'], post['dislike'] = get_like_numbers(post['id'])
     if current_user.is_authenticated:
@@ -76,6 +78,9 @@ def post_tuple_to_dict(t):
             stars = [star[0] for star in stars]
             if post['id'] in stars:
                 post['favorate'] = True
+        liked, disliked = get_like(current_user.get_id(), post['id'])
+        post['liked_by_user'] = liked
+        post['disliked_by_user'] = disliked
     return post
 
 def get_threadlist_by_bid(bid):
