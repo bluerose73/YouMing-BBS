@@ -266,7 +266,6 @@ def add_new_comment(post_id, usr_id, content, reference_id):
         print("insert success2")
         father_id = get_father_id_from_post_id(this_last_id)
         conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8')
-        cursor = conn.cursor()
         sql = "select comment_num from posts_info where post_id = " + str(father_id)
         cursor.execute(sql)
         res = cursor.fetchone()[0]
