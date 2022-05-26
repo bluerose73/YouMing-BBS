@@ -453,15 +453,11 @@ def star(usr_id, post_id):
     cursor.execute(sql)
     try:
         if res:
-            sql = "begin transaction tt declare @temp int = 0 " + \
-                  "delete from collections  where usr_id = " + str(usr_id) + " and post_id = " + str(post_id) + \
-                  " set @temp += @@error " + "if @temp == 0 begin  transaction tt end else begin rollback transaction tt end"
+            sql = "delete from collections  where usr_id = " + str(usr_id) + " and post_id = " + str(post_id) + \
             cursor.execute(sql)
         elif not res:
-            sql = "begin transaction tt declare @temp int = 0 " + \
-                  "insert into collections (`star_id`, `usr_id`, `post_id`) VALUES(" + str(new_id) + "," + str(usr_id) + "," +\
-                  str(post_id) + ")" + \
-                  " set @temp += @@error " + "if @temp == 0 begin commit transaction tt end else begin rollback transaction tt end"
+            sql = "insert into collections (`star_id`, `usr_id`, `post_id`) VALUES(" + str(new_id) + "," + str(usr_id) + "," +\
+                  str(post_id) + ")"
             print(sql)
             cursor.execute(sql)
     except Exception as e :

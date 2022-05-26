@@ -2,6 +2,7 @@
 
 from bbs.sql import *
 from icecream import ic
+from flask_login import current_user
 
 def get_all_boards():
     tuples = get_types()
@@ -66,6 +67,12 @@ def post_tuple_to_dict(t):
         'post-count': t[10],
     }
     post['author'] = get_user_by_id(post['user_id'])
+    post['like'], post['dislike'] = get_like_numbers(post['id'])
+    if current_user.is_authenticated:
+        stars = get_stars_from_usr_id(current_user.get_id())
+        ic(stars)
+        if stars and post['id'] in stars:
+            post['favorate'] = True
     return post
 
 def get_threadlist_by_bid(bid):
@@ -93,3 +100,16 @@ def query_recent10():
 
 def get_all_threads_comment_num():
     return {tid:value['post-count'] for tid, value in threaddb.items()}
+
+def toggle_like(userid, likes, postid):
+    like(userid, likes, postid)
+
+def toggle_favorate(userid, postid):
+    star(userid, postid)
+
+def query_favorate(userid):
+    postids = get_stars_from_usr_id(userid)
+    if not postids:
+        return []
+    posts = [post_tuple_to_dict(get_post_content_from_post_id(postid)) for postid in postids]
+    return posts

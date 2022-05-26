@@ -40,11 +40,12 @@ def thread():
 
 @app.route('/post-read')
 def post_read():
-    bid = request.args.get('bid', type=int)
+    # bid = request.args.get('bid', type=int)
     threadid = request.args.get('threadid', type=int)
     page = request.args.get('page', 1, type=int)
-    board = db.get_board_by_bid(bid)
     thread, comments = db.get_thread_and_comments_by_threadid(threadid)
+    bid = thread['bid']
+    board = db.get_board_by_bid(bid)
 
     return render_template('post-read.html.jinja', board=board, thread=thread, comments=comments)
 
@@ -66,6 +67,17 @@ def recent_ten():
     }
 
     threads = db.query_recent10()
+    return render_template('thread.html.jinja', board=board, threads=threads)
+
+@app.route('/favorate')
+@login_required
+def favorate():
+    board = {
+        'id': 'favorate',
+        'name': '我的收藏'
+    }
+
+    threads = db.query_favorate(current_user.get_id())
     return render_template('thread.html.jinja', board=board, threads=threads)
 
 @app.route('/myinfo')
@@ -127,9 +139,25 @@ def add_comment():
     if not content:
         return redirect(url_for('post_read', bid=bid, threadid=threadid))
 
-    ic(userid)
-    ic(content)
-    ic(threadid)
-    ic(reference_id)
     db.add_new_comment(threadid, userid, content, reference_id)
+    return redirect(url_for('post_read', bid=bid, threadid=threadid))
+
+@app.route('/like')
+@login_required
+def like():
+    bid = request.args.get('bid')
+    threadid = request.args.get('threadid')
+    postid = request.args.get('postid')
+    like = request.args.get('like')
+
+    db.toggle_like(current_user.get_id(), like, postid)
+    return redirect(url_for('post_read', bid=bid, threadid=threadid))
+
+@app.route('/add_favorate')
+@login_required
+def add_favorate():
+    bid = request.args.get('bid')
+    threadid = request.args.get('threadid')
+
+    db.toggle_favorate(current_user.get_id(), threadid)
     return redirect(url_for('post_read', bid=bid, threadid=threadid))

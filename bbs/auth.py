@@ -43,8 +43,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        userjson = db.get_user_by_id(db.get_userid_by_name(username))
-        if userjson != None:
+        userid = db.get_userid_by_name(username)
+        if userid != None:
+            userjson = db.get_user_by_id(userid)
             userjson['password_hash'] = userjson['password']
             user = User(userjson)
             if user.validate_password(password):
