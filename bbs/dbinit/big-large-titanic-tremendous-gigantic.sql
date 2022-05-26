@@ -38,7 +38,7 @@ CREATE TABLE `bbs`.`register_info` (
   `usr_email` VARCHAR(45) NULL,
   `usr_phone_num` BIGINT(16) NULL,
   `usr_age` INT NULL,
-  `collectionskindsusr_school` VARCHAR(45) NULL,
+  `usr_school` VARCHAR(45) NULL,
   `usr_photo_location` VARCHAR(45) NULL,
   `usr_nickname` VARCHAR(45) NULL,
   PRIMARY KEY (`reg_id`));

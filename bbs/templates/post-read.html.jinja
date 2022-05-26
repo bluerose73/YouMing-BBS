@@ -41,30 +41,30 @@
             <!-- 卡片的按钮 -->
             <div class="mdui-card-actions">
                 <a href={{url_for('like', bid=board.id, threadid=thread.id, postid=thread.id, like=1)}}>
-                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                     mdui-tooltip="{content: '顶一下', delay: 200}">
                     <span class="badge">{{thread.like}}</span>
                     <i class="mdui-icon material-icons mdui-text-color-theme-icon">&#xe8dc;</i>
                 </button>
                 </a>
                 <a href={{url_for('like', bid=board.id, threadid=thread.id, postid=thread.id, like=-1)}}>
-                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                     mdui-tooltip="{content: '踩一下', delay: 200}">
                     <span class="badge">{{thread.dislike}}</span>
                     <i class="mdui-icon material-icons mdui-text-color-theme-icon">thumb_down</i>
                 </button>
                 </a>
                 <a href={{url_for('add_favorate', bid=board.id, threadid=thread.id)}}>
-                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                     mdui-tooltip="{content: '收藏', delay: 200}">
                     {% if thread.favorate %}
-                    <i class="mdui-icon material-icons mdui-text-color-yellow-icon">star</i>
+                    <i class="mdui-icon material-icons mdui-text-color-theme-icon">star</i>
                     {% else %}
                     <i class="mdui-icon material-icons mdui-text-color-theme-icon">star_border</i>
                     {% endif %}
                 </button>
                 </a>
-                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                     mdui-dialog="{target: '#example-4'}" mdui-tooltip="{content: '回复这条', delay: 200}"
                     onclick="document.getElementById('refernce_id').value = {{thread.id}};">
                     <i class="mdui-icon material-icons mdui-text-color-theme-icon" id="add_tab">comment</i>
@@ -95,20 +95,20 @@
 
                     <div class="mdui-card-actions">
                         <a href={{url_for('like', bid=board.id, threadid=thread.id, postid=comment.id, like=1)}}>
-                        <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                        <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                             mdui-tooltip="{content: '顶一下', delay: 200}">
                             <span class="badge">{{comment.like}}</span>
                             <i class="mdui-icon material-icons mdui-text-color-theme-icon">&#xe8dc;</i>
                         </button>
                         </a>
                         <a href={{url_for('like', bid=board.id, threadid=thread.id, postid=comment.id, like=-1)}}>
-                        <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                        <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                             mdui-tooltip="{content: '踩一下', delay: 200}">
                             <span class="badge">{{comment.dislike}}</span>
                             <i class="mdui-icon material-icons mdui-text-color-theme-icon">thumb_down</i>
                         </button>
                         </a>
-                        <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined mc-follow"
+                        <button class="mc-icon-button mdui-btn mdui-btn-icon mdui-btn-outlined click-button"
                             mdui-dialog="{target: '#example-4'}" mdui-tooltip="{content: '回复这条', delay: 200}"
                             onclick="document.getElementById('reference_id').value = {{comment.id}};">
                             <i class="mdui-icon material-icons mdui-text-color-theme-icon" id="add_tab">comment</i>
@@ -140,3 +140,19 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block script %}
+    {{ super() }}
+    let cbtn = document.getElementsByClassName("click-button");
+    let i;
+    for (i = 0; i < cbtn.length; i++) {
+        cbtn[i].addEventListener('click', function () {
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+            }
+            else {
+                $(this).addClass("active");
+            }
+        });
+    }
+{% endblock %}

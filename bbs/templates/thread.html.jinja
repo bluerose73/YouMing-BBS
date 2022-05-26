@@ -50,9 +50,11 @@
         </div>
     </div>
 
+    {% if board.id != 'recent-ten' and board.id != 'top-ten' and board.id != 'favorate' %}
     <button class="mdui-btn mdui-fab mdui-fab-fixed mdui-ripple" mdui-dialog="{target: '#example-4'}">
         <i class="mdui-icon material-icons" id="add_tab">add</i>
     </button>
+    {% endif %}
     <div class="mdui-dialog" id="example-4">
         <div class="header">
             <div class="header-title">发帖子</div>
@@ -62,8 +64,9 @@
         </div>
         <div class="body">
             <form action={{url_for('add_thread')}} method="post">
-                <textarea class="editor-content" rows="1" name="topic">主题</textarea>
-                <textarea class="editor-content" rows="16" name="content">内容</textarea>
+                <textarea class="editor-content" rows="1" name="topic" placeholder="主题"></textarea>
+                <hr />
+                <textarea class="editor-content" rows="16" name="content" placeholder="内容"></textarea>
                 <textarea class="hidden" rows='1' name='bid'>{{board.id}}</textarea>
                 <div class="editor-toolbar">
                     <button class="submit mdui-btn mdui-btn-raised mdui-color-theme">发布</button>

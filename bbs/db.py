@@ -2,7 +2,7 @@
 
 from bbs.sql import *
 from icecream import ic
-from flask_login import current_user
+from flask_login import current_user, logout_user
 
 def get_all_boards():
     tuples = get_types()
@@ -16,6 +16,8 @@ def get_all_boards():
 
 def get_user_by_id(id):
     usr = get_usr_info_by_id(id)
+    if not usr:
+        return None
     usr['username'] = usr['name']
     usr['password'] = usr['pswd']
     usr['avatar'] = usr['photo_location']
@@ -70,8 +72,10 @@ def post_tuple_to_dict(t):
     post['like'], post['dislike'] = get_like_numbers(post['id'])
     if current_user.is_authenticated:
         stars = get_stars_from_usr_id(current_user.get_id())
-        if stars and post['id'] in stars:
-            post['favorate'] = True
+        if stars:
+            stars = [star[0] for star in stars]
+            if post['id'] in stars:
+                post['favorate'] = True
     return post
 
 def get_threadlist_by_bid(bid):
@@ -110,5 +114,5 @@ def query_favorate(userid):
     postids = get_stars_from_usr_id(userid)
     if not postids:
         return []
-    posts = [post_tuple_to_dict(get_post_content_from_post_id(postid)) for postid in postids]
+    posts = [post_tuple_to_dict(get_post_content_from_post_id(postid[0])) for postid in postids]
     return posts

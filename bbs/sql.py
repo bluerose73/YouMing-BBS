@@ -86,6 +86,8 @@ def get_id_from_name(name):
     cursor.execute(sql)
     res = cursor.fetchone()
     conn.close()
+    if not res:
+        return None
     return res[0]
 
 
@@ -328,7 +330,12 @@ def get_usr_info_by_id(usr_id):
     cursor = conn.cursor()
     sql = "select * from register_info where reg_id = \"" + str(usr_id) + "\""
     cursor.execute(sql)
-    res = cursor.fetchall()[0]
+    res = cursor.fetchall()
+    if res:
+        res = res[0]
+    else:
+        conn.close()
+        return None
     json_res = {
         "id": res[0],
         "name": res[1],
@@ -437,7 +444,7 @@ def star(usr_id, post_id):
     conn = pymysql.connect(host=Config.mysql_host, port=Config.mysql_port, user=Config.mysql_user, password=Config.mysql_password, database=Config.mysql_database, charset='utf8'
                             , autocommit=True)
     cursor = conn.cursor()
-    sql = "select MAX(id) from likes"
+    sql = "select MAX(star_id) from collections"
     cursor.execute(sql)
     new_id = cursor.fetchone()[0]
     if new_id != None:
@@ -453,7 +460,7 @@ def star(usr_id, post_id):
     cursor.execute(sql)
     try:
         if res:
-            sql = "delete from collections  where usr_id = " + str(usr_id) + " and post_id = " + str(post_id) + \
+            sql = "delete from collections  where usr_id = " + str(usr_id) + " and post_id = " + str(post_id)
             cursor.execute(sql)
         elif not res:
             sql = "insert into collections (`star_id`, `usr_id`, `post_id`) VALUES(" + str(new_id) + "," + str(usr_id) + "," +\
@@ -481,7 +488,7 @@ def get_stars_from_usr_id(usr_id):
     cursor = conn.cursor()
     sql = "select post_id from collections where usr_id = " + str(usr_id)
     cursor.execute(sql)
-    res = cursor.fetchone()
+    res = cursor.fetchall()
 
     conn.close()
     return res
