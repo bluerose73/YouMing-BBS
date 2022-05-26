@@ -55,7 +55,7 @@ def get_thread_and_comments_by_threadid(threadid):
     thread = post_tuple_to_dict(tuples[0])
     comments = [post_tuple_to_dict(tuples[i]['content']) for i in range(1, len(tuples))]
     for i, comment in enumerate (comments):
-        comment['target_content'] = tuples[i+1]['reference_content'][5]
+        comment['target_content'] = escape(tuples[i+1]['reference_content'][5])
     return thread, comments
 
 def post_tuple_to_dict(t):
