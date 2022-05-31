@@ -90,10 +90,8 @@ def myinfo():
 @login_required
 def update_myinfo():
     nickname = request.form.get('myname')
-    if request.form.get('male'):
-        gender = '男'
-    else:
-        gender = '女'
+    if request.form.get('gender'):
+        gender = request.form.get('gender')
     age = request.form.get('age')
     phone = request.form.get('phone')
     email = request.form.get('email')
