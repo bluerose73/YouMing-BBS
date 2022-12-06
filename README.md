@@ -1,4 +1,7 @@
-# bbs-backend
+# YouMing BBS
+
+YouMing BBS is an online bulletin board system.
+
 PKU JsWeb &amp; Database course project
 
 ## Install and Run
