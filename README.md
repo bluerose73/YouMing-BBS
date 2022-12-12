@@ -4,6 +4,8 @@ YouMing BBS is an online bulletin board system.
 
 PKU JsWeb &amp; Database course project
 
+<img src="README.assets\BBS.png" alt="BBS" style="zoom:50%;" />
+
 ## Install and Run
 
 #### Mysql database
